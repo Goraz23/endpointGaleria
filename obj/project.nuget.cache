@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "eT6+msuo4Zg=",
+  "dgSpecHash": "u+PF2ypLLoM=",
   "success": true,
-  "projectFilePath": "/Users/andreagomezsegura/Desktop/8vo/LibreriaUnidad2/Libreria/Library.csproj",
+  "projectFilePath": "/Users/andreagomezsegura/Desktop/8vo/Libreria/Library.csproj",
   "expectedPackageFiles": [
     "/Users/andreagomezsegura/.nuget/packages/azure.core/1.38.0/azure.core.1.38.0.nupkg.sha512",
     "/Users/andreagomezsegura/.nuget/packages/azure.identity/1.11.4/azure.identity.1.11.4.nupkg.sha512",

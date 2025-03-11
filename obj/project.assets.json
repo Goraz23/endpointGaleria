@@ -4480,11 +4480,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/andreagomezsegura/Desktop/8vo/LibreriaUnidad2/Libreria/Library.csproj",
+      "projectUniqueName": "/Users/andreagomezsegura/Desktop/8vo/Libreria/Library.csproj",
       "projectName": "Library",
-      "projectPath": "/Users/andreagomezsegura/Desktop/8vo/LibreriaUnidad2/Libreria/Library.csproj",
+      "projectPath": "/Users/andreagomezsegura/Desktop/8vo/Libreria/Library.csproj",
       "packagesPath": "/Users/andreagomezsegura/.nuget/packages/",
-      "outputPath": "/Users/andreagomezsegura/Desktop/8vo/LibreriaUnidad2/Libreria/obj/",
+      "outputPath": "/Users/andreagomezsegura/Desktop/8vo/Libreria/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/andreagomezsegura/.nuget/NuGet/NuGet.Config"
