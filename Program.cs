@@ -1,45 +1,53 @@
 using Library.Context;
+using Library.Models.Domain;
+using Library.Services;
 using Library.Services.IServices;
-using Library.Services.Services;
+using LLibrary.Services.IServices;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Configuraci贸n de servicios
 builder.Services.AddControllers();
+
+// Configuraci贸n de la base de datos
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-	options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddTransient<IAdminServices, AdminServices>();
-builder.Services.AddTransient<IAuthorServices, AuthorServices>();
-builder.Services.AddTransient<IBookServices, BookServices>();
-builder.Services.AddTransient<IEditorialServices, EditorialServices>();
+// Inyecci贸n de dependencias de los servicios
+builder.Services.AddTransient<IGaleriaService, GaleriaService>();
+builder.Services.AddTransient<IAuthorServices, AuthorService>();
+builder.Services.AddTransient<IFotografiaService, FotografiaService>();
+builder.Services.AddTransient<ICategoriaService, CategoriaService>();
 
+// Configuraci贸n de Swagger para la documentaci贸n de la API
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-	c.SwaggerDoc("v1", new OpenApiInfo
-	{
-		Title = "Mi API",
-		Version = "v1",
-		Description = "Documentaci髇 de mi API con Swagger"
-	});
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "Mi API",
+        Version = "v1",
+        Description = "Documentaci贸n de mi API con Swagger"
+    });
 });
 
 var app = builder.Build();
 
+// Configuraci贸n de middleware y manejo de errores
 if (!app.Environment.IsDevelopment())
 {
-	app.UseExceptionHandler("/Home/Error");
-	app.UseHsts();
+    app.UseExceptionHandler("/Home/Error");  // Aseg煤rate de tener una p谩gina de error
+    app.UseHsts();
 }
 
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
-	c.SwaggerEndpoint("/swagger/v1/swagger.json", "Mi API v1");
-	c.RoutePrefix = "";
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Mi API v1");
+    c.RoutePrefix = "";  // Configura la ruta base de Swagger
 });
 
 app.UseHttpsRedirection();

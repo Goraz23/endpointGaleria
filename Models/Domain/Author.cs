@@ -6,10 +6,9 @@ namespace Library.Models.Domain
     {
         [Key]
         public int PkAuthor { get; set; }
-        [Required]
-        public string Name { get; set; }
-        public string Nationality { get; set; }
-        public DateTime BirthDate { get; set; }
-        public List<Book> Books { get; set; } = new List<Book>();
+
+        public string Nombre { get; set; } = string.Empty;  
+
+        public ICollection<Fotografia> Fotografias { get; set; } = new List<Fotografia>(); 
     }
 }

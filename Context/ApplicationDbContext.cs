@@ -7,9 +7,9 @@ namespace Library.Context
     public class ApplicationDbContext : DbContext
     {
         public ApplicationDbContext(DbContextOptions options) : base(options) { }
-        public DbSet<Admin> Admins { get; set; }
+        public DbSet<Fotografia> Fotografias { get; set; }
         public DbSet<Author> Authors { get; set; }
-		public DbSet<Book> Books { get; set; }
-        public DbSet<Editorial> Editorials { get; set; }
+		public DbSet<Categoria> Categorias { get; set; }
+        public DbSet<Galeria> Galerias { get; set; }
     }
 }

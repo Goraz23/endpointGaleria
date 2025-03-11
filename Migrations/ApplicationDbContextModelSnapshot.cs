@@ -17,35 +17,10 @@ namespace Library.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.2")
+                .HasAnnotation("ProductVersion", "8.0.12")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("Library.Models.Domain.Admin", b =>
-                {
-                    b.Property<int>("PkAdmin")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PkAdmin"));
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("PkAdmin");
-
-                    b.ToTable("Admins");
-                });
 
             modelBuilder.Entity("Library.Models.Domain.Author", b =>
                 {
@@ -55,14 +30,7 @@ namespace Library.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PkAuthor"));
 
-                    b.Property<DateTime>("BirthDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Nationality")
+                    b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -71,97 +39,116 @@ namespace Library.Migrations
                     b.ToTable("Authors");
                 });
 
-            modelBuilder.Entity("Library.Models.Domain.Book", b =>
+            modelBuilder.Entity("Library.Models.Domain.Categoria", b =>
                 {
-                    b.Property<int>("PkBook")
+                    b.Property<int>("PkCategoria")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PkBook"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PkCategoria"));
+
+                    b.Property<string>("NombreCategoria")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("PkCategoria");
+
+                    b.ToTable("Categorias");
+                });
+
+            modelBuilder.Entity("Library.Models.Domain.Fotografia", b =>
+                {
+                    b.Property<int>("PkFotografia")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PkFotografia"));
+
+                    b.Property<int?>("AuthorPkAuthor")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CategoriaPkCategoria")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("FechaPublicacion")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("FkAuthor")
                         .HasColumnType("int");
 
-                    b.Property<int>("FkEditorial")
+                    b.Property<int>("FkCategoria")
                         .HasColumnType("int");
 
-                    b.Property<string>("ISBN")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Pages")
+                    b.Property<int>("FkGaleria")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("PublicationYear")
+                    b.Property<int?>("GaleriaPkGaleria")
                         .HasColumnType("int");
 
-                    b.HasKey("PkBook");
+                    b.HasKey("PkFotografia");
 
-                    b.HasIndex("FkAuthor");
+                    b.HasIndex("AuthorPkAuthor");
 
-                    b.HasIndex("FkEditorial");
+                    b.HasIndex("CategoriaPkCategoria");
 
-                    b.ToTable("Books");
+                    b.HasIndex("GaleriaPkGaleria");
+
+                    b.ToTable("Fotografia");
                 });
 
-            modelBuilder.Entity("Library.Models.Domain.Editorial", b =>
+            modelBuilder.Entity("Library.Models.Domain.Galeria", b =>
                 {
-                    b.Property<int>("PkEditorial")
+                    b.Property<int>("PkGaleria")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PkEditorial"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PkGaleria"));
 
-                    b.Property<string>("Country")
-                        .IsRequired()
+                    b.Property<string>("Descripcion")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Name")
+                    b.Property<DateTime>("FechaCreacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("NombreGaleria")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("YearFounded")
-                        .HasColumnType("int");
+                    b.HasKey("PkGaleria");
 
-                    b.HasKey("PkEditorial");
-
-                    b.ToTable("Editorials");
+                    b.ToTable("Galeria");
                 });
 
-            modelBuilder.Entity("Library.Models.Domain.Book", b =>
+            modelBuilder.Entity("Library.Models.Domain.Fotografia", b =>
                 {
                     b.HasOne("Library.Models.Domain.Author", "Author")
-                        .WithMany("Books")
-                        .HasForeignKey("FkAuthor")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("Fotografias")
+                        .HasForeignKey("AuthorPkAuthor");
 
-                    b.HasOne("Library.Models.Domain.Editorial", "Editorial")
-                        .WithMany("Books")
-                        .HasForeignKey("FkEditorial")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("Library.Models.Domain.Categoria", "Categoria")
+                        .WithMany("Fotografias")
+                        .HasForeignKey("CategoriaPkCategoria");
+
+                    b.HasOne("Library.Models.Domain.Galeria", "Galeria")
+                        .WithMany()
+                        .HasForeignKey("GaleriaPkGaleria");
 
                     b.Navigation("Author");
 
-                    b.Navigation("Editorial");
+                    b.Navigation("Categoria");
+
+                    b.Navigation("Galeria");
                 });
 
             modelBuilder.Entity("Library.Models.Domain.Author", b =>
                 {
-                    b.Navigation("Books");
+                    b.Navigation("Fotografias");
                 });
 
-            modelBuilder.Entity("Library.Models.Domain.Editorial", b =>
+            modelBuilder.Entity("Library.Models.Domain.Categoria", b =>
                 {
-                    b.Navigation("Books");
+                    b.Navigation("Fotografias");
                 });
 #pragma warning restore 612, 618
         }

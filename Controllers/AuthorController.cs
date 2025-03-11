@@ -1,51 +1,81 @@
-﻿using Library.Models.Domain;
-using Library.Services.IServices;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Library.Models.Domain;
+using Microsoft.EntityFrameworkCore;
+using Library.Context; // Cambié Library.Data a Library.Context
 
 namespace Library.Controllers
 {
-	[ApiController]
-	[Route("api/[controller]")]
-	public class AuthorController : ControllerBase
-	{
-		private readonly IAuthorServices _authorServices;
+    [Route("api/[controller]")]
+    [ApiController]
+    public class AuthorController : ControllerBase
+    {
+        private readonly ApplicationDbContext _context;
 
-		public AuthorController(IAuthorServices authorServices)
-		{
-			_authorServices = authorServices;
-		}
+        public AuthorController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
 
-		[HttpGet]
-		public ActionResult<List<Author>> GetAuthors()
-		{
-			try
-			{
-				var authors = _authorServices.GetAuthors();
-				return Ok(authors);
-			}
-			catch (Exception)
-			{
-				return StatusCode(500, "Error interno del servidor.");
-			}
-		}
+        // GET: api/author
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Author>>> GetAuthors()
+        {
+            return await _context.Authors.ToListAsync();
+        }
 
-		[HttpPost]
-		public ActionResult CreateAuthor([FromBody] Author author)
-		{
-			try
-			{
-				bool created = _authorServices.CreateAuthor(author);
-				if (!created)
-				{
-					return BadRequest("No se pudo crear el autor.");
-				}
+        // GET: api/author/{id}
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Author>> GetAuthor(int id)
+        {
+            var author = await _context.Authors.FindAsync(id);
 
-				return Ok("Autor creado exitosamente.");
-			}
-			catch (Exception)
-			{
-				return StatusCode(500, "Error interno del servidor.");
-			}
-		}
-	}
+            if (author == null)
+            {
+                return NotFound();
+            }
+
+            return author;
+        }
+
+        // POST: api/author
+        [HttpPost]
+        public async Task<ActionResult<Author>> PostAuthor(Author author)
+        {
+            _context.Authors.Add(author);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetAuthor), new { id = author.PkAuthor }, author);
+        }
+
+        // PUT: api/author/{id}
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutAuthor(int id, Author author)
+        {
+            if (id != author.PkAuthor)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(author).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        // DELETE: api/author/{id}
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAuthor(int id)
+        {
+            var author = await _context.Authors.FindAsync(id);
+            if (author == null)
+            {
+                return NotFound();
+            }
+
+            _context.Authors.Remove(author);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+    }
 }
