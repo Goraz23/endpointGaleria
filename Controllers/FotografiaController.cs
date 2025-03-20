@@ -47,37 +47,34 @@ namespace Library.Controllers
             return CreatedAtAction(nameof(GetFotografia), new { id = fotografia.PkFotografia }, fotografia);
         }
 
-        // PUT: api/fotografia/{id}
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutFotografia(int id, Fotografia request)
-        {
-            // if (id != fotografia.PkFotografia)
-            // {
-            //     return BadRequest();
-            // }
+		// PUT: api/fotografia/{id}
+		[HttpPut("{id}")]
+		public async Task<IActionResult> PutFotografia(int id, Fotografia fotografia)
+		{
+			var fotografiaExistente = await _context.Fotografias.FindAsync(id);
+			if (fotografiaExistente == null)
+			{
+				return NotFound();
+			}
 
-            // _context.Entry(fotografia).State = EntityState.Modified;
-            // await _context.SaveChangesAsync();
-            
-            Fotografia fotografia = _context.Fotografias.Find(
-                id
-            )
+			try
+			{
+				fotografia.PkFotografia = fotografiaExistente.PkFotografia;
 
-            foreach (var property int typeof(Fotografia).GetProperties()){
-                if(property.CanWrite){
-                    property.SetValue(fotografia, property.GetValue(request))
-                }
-            
-            } 
-            _context.Fotografias.Update(fotografia);
-            _context.SaveChanges();
+				_context.Entry(fotografiaExistente).CurrentValues.SetValues(fotografia);
 
-            return NoContent();
+				await _context.SaveChangesAsync();
+			}
+			catch (DbUpdateConcurrencyException)
+			{
+				return Conflict("Hubo un conflicto de concurrencia. Los datos han sido modificados por otro proceso.");
+			}
 
-        }
+			return NoContent();
+		}
 
-        // DELETE: api/fotografia/{id}
-        [HttpDelete("{id}")]
+		// DELETE: api/fotografia/{id}
+		[HttpDelete("{id}")]
         public async Task<IActionResult> DeleteFotografia(int id)
         {
             var fotografia = await _context.Fotografias.FindAsync(id);

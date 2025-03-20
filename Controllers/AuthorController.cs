@@ -52,35 +52,27 @@ namespace Library.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAuthor(int id, [FromBody] Author author)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+			var authorExistente = await _context.Authors.FindAsync(id);
+			if (authorExistente == null)
+			{
+				return NotFound();
+			}
 
-            if (id != author.PkAuthor)
-            {
-                return BadRequest("El ID en la URL no coincide con el del cuerpo de la solicitud.");
-            }
+			try
+			{
+				author.PkAuthor = authorExistente.PkAuthor;
 
-            var existingAuthor = await _context.Authors.AsNoTracking().FirstOrDefaultAsync(a => a.PkAuthor == id);
-            if (existingAuthor == null)
-            {
-                return NotFound();
-            }
+				_context.Entry(authorExistente).CurrentValues.SetValues(author);
 
-            _context.Entry(author).State = EntityState.Modified;
+				await _context.SaveChangesAsync();
+			}
+			catch (DbUpdateConcurrencyException)
+			{
+				return Conflict("Hubo un conflicto de concurrencia. Los datos han sido modificados por otro proceso.");
+			}
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                return StatusCode(500, "Error al actualizar el autor.");
-            }
-
-            return NoContent();
-        }
+			return NoContent();
+		}
 
 
 

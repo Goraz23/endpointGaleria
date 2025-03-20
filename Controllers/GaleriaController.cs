@@ -51,16 +51,27 @@ namespace Library.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutGaleria(int id, Galeria galeria)
         {
-            if (id != galeria.PkGaleria)
-            {
-                return BadRequest();
-            }
+			var galeriaExistente = await _context.Galerias.FindAsync(id);
+			if (galeriaExistente == null)
+			{
+				return NotFound();
+			}
 
-            _context.Entry(galeria).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
+			try
+			{
+				galeria.PkGaleria = galeriaExistente.PkGaleria;
 
-            return NoContent();
-        }
+				_context.Entry(galeriaExistente).CurrentValues.SetValues(galeria);
+
+				await _context.SaveChangesAsync();
+			}
+			catch (DbUpdateConcurrencyException)
+			{
+				return Conflict("Hubo un conflicto de concurrencia. Los datos han sido modificados por otro proceso.");
+			}
+
+			return NoContent();
+		}
 
         // DELETE: api/galeria/{id}
         [HttpDelete("{id}")]

@@ -51,16 +51,27 @@ namespace Library.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCategoria(int id, Categoria categoria)
         {
-            if (id != categoria.PkCategoria)
-            {
-                return BadRequest();
-            }
+			var categoriaExistente = await _context.Categorias.FindAsync(id);
+			if (categoriaExistente == null)
+			{
+				return NotFound();
+			}
 
-            _context.Entry(categoria).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
+			try
+			{
+				categoria.PkCategoria = categoriaExistente.PkCategoria;
 
-            return NoContent();
-        }
+				_context.Entry(categoriaExistente).CurrentValues.SetValues(categoria);
+
+				await _context.SaveChangesAsync();
+			}
+			catch (DbUpdateConcurrencyException)
+			{
+				return Conflict("Hubo un conflicto de concurrencia. Los datos han sido modificados por otro proceso.");
+			}
+
+			return NoContent();
+		}
 
         // DELETE: api/categoria/{id}
         [HttpDelete("{id}")]

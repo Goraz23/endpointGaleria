@@ -1,26 +1,34 @@
 {
   "format": 1,
   "restore": {
-    "/Users/andreagomezsegura/Desktop/8vo/Libreria/Library.csproj": {}
+    "C:\\Users\\maxim\\source\\repos\\endpointGaleria\\Library.csproj": {}
   },
   "projects": {
-    "/Users/andreagomezsegura/Desktop/8vo/Libreria/Library.csproj": {
+    "C:\\Users\\maxim\\source\\repos\\endpointGaleria\\Library.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/andreagomezsegura/Desktop/8vo/Libreria/Library.csproj",
+        "projectUniqueName": "C:\\Users\\maxim\\source\\repos\\endpointGaleria\\Library.csproj",
         "projectName": "Library",
-        "projectPath": "/Users/andreagomezsegura/Desktop/8vo/Libreria/Library.csproj",
-        "packagesPath": "/Users/andreagomezsegura/.nuget/packages/",
-        "outputPath": "/Users/andreagomezsegura/Desktop/8vo/Libreria/obj/",
+        "projectPath": "C:\\Users\\maxim\\source\\repos\\endpointGaleria\\Library.csproj",
+        "packagesPath": "C:\\Users\\maxim\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\maxim\\source\\repos\\endpointGaleria\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\DevExpress 24.1\\Components\\Offline Packages",
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "/Users/andreagomezsegura/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\maxim\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 24.1.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "/usr/local/share/dotnet/library-packs": {},
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\DevExpress 24.1\\Components\\System\\Components\\Packages": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -38,7 +46,8 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        }
+        },
+        "SdkAnalysisLevel": "9.0.200"
       },
       "frameworks": {
         "net8.0": {
@@ -90,7 +99,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.406/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.201/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
