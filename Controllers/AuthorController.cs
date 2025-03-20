@@ -48,19 +48,41 @@ namespace Library.Controllers
         }
 
         // PUT: api/author/{id}
+
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAuthor(int id, Author author)
+        public async Task<IActionResult> UpdateAuthor(int id, [FromBody] Author author)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             if (id != author.PkAuthor)
             {
-                return BadRequest();
+                return BadRequest("El ID en la URL no coincide con el del cuerpo de la solicitud.");
+            }
+
+            var existingAuthor = await _context.Authors.AsNoTracking().FirstOrDefaultAsync(a => a.PkAuthor == id);
+            if (existingAuthor == null)
+            {
+                return NotFound();
             }
 
             _context.Entry(author).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return StatusCode(500, "Error al actualizar el autor.");
+            }
 
             return NoContent();
         }
+
+
 
         // DELETE: api/author/{id}
         [HttpDelete("{id}")]

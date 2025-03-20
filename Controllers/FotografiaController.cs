@@ -49,17 +49,31 @@ namespace Library.Controllers
 
         // PUT: api/fotografia/{id}
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutFotografia(int id, Fotografia fotografia)
+        public async Task<IActionResult> PutFotografia(int id, Fotografia request)
         {
-            if (id != fotografia.PkFotografia)
-            {
-                return BadRequest();
-            }
+            // if (id != fotografia.PkFotografia)
+            // {
+            //     return BadRequest();
+            // }
 
-            _context.Entry(fotografia).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
+            // _context.Entry(fotografia).State = EntityState.Modified;
+            // await _context.SaveChangesAsync();
+            
+            Fotografia fotografia = _context.Fotografias.Find(
+                id
+            )
+
+            foreach (var property int typeof(Fotografia).GetProperties()){
+                if(property.CanWrite){
+                    property.SetValue(fotografia, property.GetValue(request))
+                }
+            
+            } 
+            _context.Fotografias.Update(fotografia);
+            _context.SaveChanges();
 
             return NoContent();
+
         }
 
         // DELETE: api/fotografia/{id}

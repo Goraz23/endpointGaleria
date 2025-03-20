@@ -9,6 +9,19 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Configuración de CORS
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:5173") // Origen del frontend
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
+});
+
 // Configuración de servicios
 builder.Services.AddControllers();
 
@@ -39,7 +52,7 @@ var app = builder.Build();
 // Configuración de middleware y manejo de errores
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error");  // Asegúrate de tener una página de error
+    app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
 
@@ -47,13 +60,16 @@ app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Mi API v1");
-    c.RoutePrefix = "";  // Configura la ruta base de Swagger
+    c.RoutePrefix = "";
 });
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
-app.MapControllers();
-app.UseAuthorization();
 
+// Habilitar CORS antes de Authorization
+app.UseCors(MyAllowSpecificOrigins);
+
+app.UseAuthorization();
+app.MapControllers();
 app.Run();

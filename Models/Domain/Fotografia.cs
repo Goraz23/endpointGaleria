@@ -9,6 +9,7 @@ namespace Library.Models.Domain
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int PkFotografia { get; set; }
+        public string Nombre { get; set; }
 
         public DateTime FechaPublicacion { get; set; }
 
